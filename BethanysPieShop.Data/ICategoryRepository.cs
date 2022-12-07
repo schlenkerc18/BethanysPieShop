@@ -1,4 +1,6 @@
-﻿namespace BethanysPieShop.Domain.Models
+﻿using BethanysPieShop.Domain.Models;
+
+namespace BethanysPieShop.Data
 {
     public interface ICategoryRepository
     {

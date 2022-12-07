@@ -1,11 +1,17 @@
+using BethanysPieShop.Data;
 using BethanysPieShop.Domain.Models;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddScoped<ICategoryRepository, MockCategoryRepository>();
-builder.Services.AddScoped<IPieRepository, MockPieRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IPieRepository, PieRepository>();
 
 builder.Services.AddControllersWithViews(); // makes sure asp.net core app will know about mvc
+builder.Services.AddDbContext<BethanysPieShopDbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("BethanysPieShopDb"));
+});
 
 var app = builder.Build();
 
@@ -16,6 +22,10 @@ if (app.Environment.IsDevelopment())
     app.UseDeveloperExceptionPage();
 }
 
-app.MapDefaultControllerRoute(); // lets us see our pages
+app.MapDefaultControllerRoute(); // lets us see our pages. default route:  "{controller=Home}/{action=Index}/{id?}"
+//app.MapControllerRoute(
+//    name: "default",
+//    pattern: "{controller=Home}/{action=Index}/{id?}");
 
+DbInitializer.Seed(app);
 app.Run(); // starts app
