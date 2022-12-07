@@ -1,4 +1,4 @@
-﻿namespace BethanysPieShop.Models
+﻿namespace BethanysPieShop.Domain.Models
 {
     public class MockCategoryRepository : ICategoryRepository
     {
