@@ -6,12 +6,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IPieRepository, PieRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 
 builder.Services.AddScoped<IShoppingCart, ShoppingCart>(sp => ShoppingCart.GetCart(sp));
 builder.Services.AddSession();
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddControllersWithViews(); // makes sure asp.net core app will know about mvc
+builder.Services.AddRazorPages();
 builder.Services.AddDbContext<BethanysPieShopDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("BethanysPieShopDb"));
@@ -31,6 +33,6 @@ app.MapDefaultControllerRoute(); // lets us see our pages. default route:  "{con
 //app.MapControllerRoute(
 //    name: "default",
 //    pattern: "{controller=Home}/{action=Index}/{id?}");
-
+app.MapRazorPages();
 DbInitializer.Seed(app);
 app.Run(); // starts app

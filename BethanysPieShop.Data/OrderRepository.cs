@@ -1,0 +1,47 @@
+﻿using BethanysPieShop.Domain.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BethanysPieShop.Data
+{
+    public class OrderRepository : IOrderRepository
+    {
+        private readonly BethanysPieShopDbContext bethanysPieShopDbContext;
+        private readonly IShoppingCart shoppingCart;
+
+        public OrderRepository(BethanysPieShopDbContext bethanysPieShopDbContext, IShoppingCart shoppingCart)
+        {
+            this.bethanysPieShopDbContext = bethanysPieShopDbContext;
+            this.shoppingCart = shoppingCart;
+        }
+
+        public void CreateOrder(Order order)
+        {
+            order.OrderPlaced = DateTime.Now;
+
+            List<ShoppingCartItem>? shoppingCartItems = shoppingCart.ShoppingCartItems;
+            order.OrderTotal = shoppingCart.GetShoppingCartTotal();
+
+            order.OrderDetails = new List<OrderDetail>();
+
+            // adding the order with its details
+            foreach (ShoppingCartItem? shoppingCartItem in shoppingCartItems)
+            {
+                var orderDetail = new OrderDetail
+                {
+                    Amount = shoppingCartItem.Amount,
+                    PieId = shoppingCartItem.Pie.PieId,
+                    Price = shoppingCartItem.Pie.Price
+                };
+
+                order.OrderDetails.Add(orderDetail);
+            }
+
+            bethanysPieShopDbContext.Orders.Add(order);
+            bethanysPieShopDbContext.SaveChanges();
+        }
+    }
+}
