@@ -23,4 +23,8 @@
     <ProjectReference Include="..\BethanysPieShop.Domain\BethanysPieShop.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\Shared\Components\NewFolder\" />
+  </ItemGroup>
+
 </Project>
