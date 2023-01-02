@@ -1,5 +1,6 @@
 ﻿using BethanysPieShop.Domain.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BethanysPieShop.Data
 {
-    public class BethanysPieShopDbContext : DbContext
+    public class BethanysPieShopDbContext : IdentityDbContext
     {
         public BethanysPieShopDbContext(DbContextOptions<BethanysPieShopDbContext> options) : base(options)
         {

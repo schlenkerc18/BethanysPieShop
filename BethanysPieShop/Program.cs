@@ -1,5 +1,6 @@
 using BethanysPieShop.Data;
 using BethanysPieShop.Domain.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
@@ -24,6 +25,9 @@ builder.Services.AddDbContext<BethanysPieShopDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("BethanysPieShopDb"));
 });
 
+builder.Services.AddDefaultIdentity<IdentityUser>()
+    .AddEntityFrameworkStores<BethanysPieShopDbContext>();
+
 /*builder.Services.AddControllers();*/ // for just an api without views, but don't need this since we've already added controllers with views
 builder.Services.AddServerSideBlazor(); // add blazor to application
 
@@ -31,6 +35,9 @@ var app = builder.Build();
 
 app.UseStaticFiles();  // look in wwwroot folder for static files, shortcircuit request
 app.UseSession();
+app.UseAuthentication();
+app.UseAuthorization();
+
 
 if (app.Environment.IsDevelopment())
 {
